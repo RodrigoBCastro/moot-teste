@@ -1,0 +1,48 @@
+services:
+  app:
+    build: .
+    container_name: laravel_moot
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+    depends_on:
+      - db
+    networks:
+      - moot
+
+  webserver:
+    image: nginx:latest
+    container_name: nginx_moot
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - moot
+
+  db:
+    image: postgres:latest
+    container_name: db_moot
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: moot
+      POSTGRES_USER: moot
+      POSTGRES_PASSWORD: moot
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - moot
+
+networks:
+  moot:
+    driver: bridge
+
+volumes:
+  db_data:
