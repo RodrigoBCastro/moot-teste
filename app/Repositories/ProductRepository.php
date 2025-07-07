@@ -23,4 +23,11 @@ class ProductRepository
             ->latest()
             ->paginate($perPage);
     }
+
+    public function create(Product $product): Product
+    {
+        $product->save();
+
+        return $product;
+    }
 }
