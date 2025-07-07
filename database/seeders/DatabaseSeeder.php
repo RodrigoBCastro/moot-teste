@@ -18,9 +18,10 @@ class DatabaseSeeder extends Seeder
 
         $brands = Brand::factory(15)->create();
 
-        Product::factory(100)->create([
-            'category_id' => $categories->random()->id,
-            'brand_id' => $brands->random()->id,
-        ]);
+        Product::factory(100)->make()->each(function ($product) use ($categories, $brands) {
+            $product->category_id = $categories->random()->id;
+            $product->brand_id = $brands->random()->id;
+            $product->save();
+        });
     }
 }

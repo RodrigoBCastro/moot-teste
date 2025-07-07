@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Brand;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,11 +18,16 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
+        $adjectives = ['Smart', 'Pro', 'Ultra', 'Eco', 'Max', 'Plus'];
+        $products = ['TV', 'Notebook', 'Fone', 'Celular', 'Relógio', 'Monitor'];
+
+        $name = $this->faker->randomElement($adjectives) . ' ' . $this->faker->randomElement($products);
+
         return [
-            'name' => $this->faker->name(),
-            'category_id' => \App\Models\Category::factory(),
-            'brand_id' => \App\Models\Brand::factory(),
-            'price' => $this->faker->randomFloat(2, 10, 1000),
+            'name' => $name,
+            'price' => $this->faker->randomFloat(2, 100, 5000),
+            'category_id' => Category::inRandomOrder()->first()->id,
+            'brand_id' => Brand::inRandomOrder()->first()->id,
         ];
     }
 }

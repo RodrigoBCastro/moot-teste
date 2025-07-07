@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Brand>
@@ -16,10 +17,17 @@ class BrandFactory extends Factory
      */
     public function definition(): array
     {
-        $name = $this->faker->unique()->company();
+        $brands = [
+            'Nike', 'Adidas', 'Samsung', 'Apple', 'Sony',
+            'LG', 'Asus', 'Dell', 'Lenovo', 'Microsoft',
+            'Acer', 'Motorola', 'HP', 'Philips', 'Xiaomi',
+        ];
+
+        $name = $this->faker->unique()->randomElement($brands);
+
         return [
             'name' => $name,
-            'slug' => \Illuminate\Support\Str::slug($name),
+            'slug' => Str::slug($name),
         ];
     }
 }
